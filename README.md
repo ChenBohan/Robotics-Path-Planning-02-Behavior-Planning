@@ -1,2 +1,2 @@
-# Robotics-Path-Planning-03-Finite-State-Machines
+# Robotics-Path-Planning-03-Behavior-Planning.
 Udacity Self-Driving Car Engineer Nanodegree: Behavior Planning.
