@@ -249,3 +249,22 @@ float calculate_cost(const Vehicle & vehicle, const map<int, vector<Vehicle>> & 
 }
 ```
 ### Choose appropriate weights for the cost functions in ``cost.cpp`` to induce the desired vehicle behavior.
+
+1.Cost increases based on distance of intended lane (for planning a lane change) and final lane of trajectory.
+
+Cost of being out of goal lane also becomes larger as vehicle approaches goal distance.
+
+```cpp
+cost = 1 - 2*exp(-(abs(2.0*vehicle.goal_lane - data["intended_lane"] - data["final_lane"]) / distance));
+```
+
+2.Cost becomes higher for trajectories with intended lane and final lane that have traffic slower than vehicle's target speed. 
+
+```cpp
+float cost = (2.0*vehicle.target_speed - proposed_speed_intended - proposed_speed_final)/vehicle.target_speed;
+```
+
+3.Sum weighted cost functions to get total cost for trajectory.
+```cpp
+float new_cost = weight_list[i]*cf_list[i](vehicle, trajectory, predictions, trajectory_data);
+```
