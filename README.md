@@ -3,15 +3,15 @@ Udacity Self-Driving Car Engineer Nanodegree: Behavior Planning.
 
 ## Implement a Behavior Planner
 
-### Initialization
+### 1.Initialization
 
-We initialize the roads and vehicles.
+1.1.We initialize the roads and vehicles.
 ```cpp
 Road road = Road(SPEED_LIMIT, TRAFFIC_DENSITY, LANE_SPEEDS)
 Vehicle ego = Vehicle(lane_num, s, this->lane_speeds[lane_num], 0);
 Vehicle vehicle = Vehicle(l,s,lane_speed,0);
 ```
-We calculate the next road state.
+1.2.We calculate the next road state.
 ```cpp
     while(it != this->vehicles.end())
     {
@@ -37,9 +37,9 @@ We calculate the next road state.
 ```
 
 
-### Calculate the next states of vehicles. 
+### 2.Calculate the next states of vehicles. 
 
-1.successor_states() - Uses the current state to return a vector of possible successor states for the finite state machine.
+2.1.successor_states() - Uses the current state to return a vector of possible successor states for the finite state machine.
 
 - "KL" - Keep Lane
 - "LCL" / "LCR"- Lane Change Left / Lane Change Right
@@ -72,7 +72,7 @@ vector<string> Vehicle::successor_states() {
 }
 ```
 
-2.Given a possible next state, generate the appropriate trajectory to realize the next state.
+2.2.Given a possible next state, generate the appropriate trajectory to realize the next state.
 
 ```cpp
 vector<Vehicle> Vehicle::generate_trajectory(string state, map<int, vector<Vehicle>> predictions) {
@@ -94,15 +94,15 @@ vector<Vehicle> Vehicle::generate_trajectory(string state, map<int, vector<Vehic
 }
 ```
 
-3.Trajectory generation
+### 3.Trajectory generation
 
-Returns a vector of Vehicle objects representing a vehicle trajectory, given a state and predictions. 
+3.1Returns a vector of Vehicle objects representing a vehicle trajectory, given a state and predictions. 
 
-3.1.Generate a constant speed trajectory.
+3.1.1.Generate a constant speed trajectory.
 
-3.2.Generate a keep lane trajectory.
+3.1.2.Generate a keep lane trajectory.
 
-3.3.Generate a trajectory preparing for a lane change.
+3.1.3.Generate a trajectory preparing for a lane change.
 
 ```cpp
 vector<Vehicle> Vehicle::prep_lane_change_trajectory(string state, map<int, vector<Vehicle>> predictions) {
@@ -141,7 +141,7 @@ vector<Vehicle> Vehicle::prep_lane_change_trajectory(string state, map<int, vect
 
 ```
 
-3.4.Generate a lane change trajectory.
+3.2.Generate a lane change trajectory.
 
 ```cpp
 vector<Vehicle> Vehicle::lane_change_trajectory(string state, map<int, vector<Vehicle>> predictions) {
@@ -164,7 +164,7 @@ vector<Vehicle> Vehicle::lane_change_trajectory(string state, map<int, vector<Ve
 }
 ```
 
-4.Gets next timestep kinematics (position, velocity, acceleration for a given lane. Tries to choose the maximum velocity and acceleration, given other vehicle positions and accel/velocity constraints.
+3.3.Gets next timestep kinematics (position, velocity, acceleration for a given lane. Tries to choose the maximum velocity and acceleration, given other vehicle positions and accel/velocity constraints.
 
 ```cpp
 vector<float> Vehicle::get_kinematics(map<int, vector<Vehicle>> predictions, int lane) {
@@ -194,7 +194,7 @@ vector<float> Vehicle::get_kinematics(map<int, vector<Vehicle>> predictions, int
 }
 ```
 
-5.Return the best (lowest cost) trajectory corresponding to the next state.
+3.4.Return the best (lowest cost) trajectory corresponding to the next state.
 
 ```cpp
 vector<Vehicle> Vehicle::choose_next_state(map<int, vector<Vehicle>> predictions) {
@@ -225,7 +225,7 @@ vector<Vehicle> Vehicle::choose_next_state(map<int, vector<Vehicle>> predictions
 ```
 
 
-3.``calculate_cost(Vehicle vehicle, map<int, vector<Vehicle>> predictions, vector<Vehicle> trajectory)``
+3.5.``calculate_cost(Vehicle vehicle, map<int, vector<Vehicle>> predictions, vector<Vehicle> trajectory)``
 
 - Included from ``cost.cpp``, computes the cost for a trajectory.
 
