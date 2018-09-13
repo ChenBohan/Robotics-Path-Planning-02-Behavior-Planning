@@ -96,7 +96,7 @@ vector<Vehicle> Vehicle::generate_trajectory(string state, map<int, vector<Vehic
 
 ### 3.Trajectory generation
 
-3.1Returns a vector of Vehicle objects representing a vehicle trajectory, given a state and predictions. 
+3.1.Returns a vector of Vehicle objects representing a vehicle trajectory, given a state and predictions. 
 
 3.1.1.Generate a constant speed trajectory.
 
@@ -166,33 +166,14 @@ vector<Vehicle> Vehicle::lane_change_trajectory(string state, map<int, vector<Ve
 
 3.3.Gets next timestep kinematics (position, velocity, acceleration for a given lane. Tries to choose the maximum velocity and acceleration, given other vehicle positions and accel/velocity constraints.
 
-```cpp
-vector<float> Vehicle::get_kinematics(map<int, vector<Vehicle>> predictions, int lane) {
-
-	float max_velocity_accel_limit = this->max_acceleration + this->v;
-	float new_position;
-	float new_velocity;
-	float new_accel;
-	Vehicle vehicle_ahead;
-	Vehicle vehicle_behind;
-
-	if (get_vehicle_ahead(predictions, lane, vehicle_ahead)) {
-		if (get_vehicle_behind(predictions, lane, vehicle_behind)) {
-			new_velocity = vehicle_ahead.v; //must travel at the speed of traffic, regardless of preferred buffer
-		}
-		else {
-			float max_velocity_in_front = (vehicle_ahead.s - this->s - this->preferred_buffer) + vehicle_ahead.v - 0.5 * (this->a);
-			new_velocity = min(min(max_velocity_in_front, max_velocity_accel_limit), this->target_speed);
-		}
-	}
-	else {
-		new_velocity = min(max_velocity_accel_limit, this->target_speed);
-	}
-	new_accel = new_velocity - this->v; //Equation: (v_1 - v_0)/t = acceleration
-	new_position = this->s + new_velocity + new_accel / 2.0;
-	return{ new_position, new_velocity, new_accel };
-}
-```
+- if there is a vehicle ahead and a vehicle behind:
+	- we must travel at the speed of traffic, regardless of preferred buffer.
+	- ``new_velocity = vehicle_ahead.v;``
+- if there is a vehicle ahead but not vehicle behind:
+	- ``float max_velocity_in_front = (vehicle_ahead.s - this->s - this->preferred_buffer) + vehicle_ahead.v - 0.5 * (this->a);
+	new_velocity = min(min(max_velocity_in_front, max_velocity_accel_limit), this->target_speed);``
+- if there is not vehicle ahead:
+	- ``new_velocity = min(max_velocity_accel_limit, this->target_speed);``
 
 3.4.Return the best (lowest cost) trajectory corresponding to the next state.
 
