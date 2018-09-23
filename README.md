@@ -1,4 +1,4 @@
-# Robotics-Path-Planning-03-Behavior-Planning.
+# Robotics-Path-Planning-02-Behavior-Planning.
 Udacity Self-Driving Car Engineer Nanodegree: Behavior Planning.
 
 ## Implement a Behavior Planner
